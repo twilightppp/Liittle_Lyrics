@@ -91,7 +91,8 @@ body {
 }
 
 .result-item {
-    width: 60%;
+    width: 60%; /* 调整宽度 */
+    height: 50px; /* 设置固定高度*/
     margin: 10px auto;
     padding: 15px;
     border: 1px solid #ddd;
