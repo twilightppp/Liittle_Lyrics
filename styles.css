@@ -20,8 +20,8 @@ body {
 }
 
 .search-bar input {
-    width: 70%; /* 输入框宽度 */
-    height: 40px; /* 输入框高度 */
+    width: 60%; /* 输入框宽度 */
+    height: 30px; /* 输入框高度 */
     font-size: 16px; /* 字体大小 */
     padding: 5px 10px;
     border: 1px solid #ccc;
@@ -91,7 +91,7 @@ body {
 }
 
 .result-item {
-    width: 70%;
+    width: 60%;
     margin: 10px auto;
     padding: 15px;
     border: 1px solid #ddd;
@@ -135,15 +135,21 @@ body {
 
 .album-slider {
     display: flex;
-    justify-content: center;
-    gap: 10px; /* 图片之间的间距 */
+    flex-wrap: wrap; /* 启用换行 */
+    justify-content: center; /* 居中对齐 */
+    gap: 20px; /* 图片之间的间距 */
 }
 
 .album-slider img {
-    width: 200px; /* 调整专辑封面的宽度 */
+    width: 150px; /* 调整专辑封面的宽度 */
     height: auto;
     border-radius: 10px; /* 可选：添加圆角 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+}
+
+/* 每两张图片后强制换行 */
+.album-slider img:nth-child(2n+1) {
+    clear: both; /* 强制换行 */
 }
 
 .prev-button, .next-button {
