@@ -1,0 +1,75 @@
+<!DOCTYPE html>  
+<html lang="zh-CN">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 添加视口元标签 -->
+    <title>歌曲详情</title>  
+    <link rel="stylesheet" href="styles.css">  
+</head>  
+<body>  
+    <div class="container">  
+        <h1 id="songTitle"></h1>  
+        <div id="lyrics"></div>  
+    </div>  
+
+    <script>  
+        // 获取 URL 中的参数
+        const params = new URLSearchParams(window.location.search);
+        const title = params.get('title');
+        const keyword = params.get('keyword');
+
+        // 设置歌曲标题，添加书名号
+        document.getElementById('songTitle').textContent = `《${title}》`;
+
+        // 加载歌词数据
+        fetch('lyrics.json')
+            .then(response => response.json())
+            .then(data => {
+                const song = data.find(song => song.title === title);
+                if (song) {
+                    // 按换行符分隔歌词并逐行显示
+                    const lines = song.lyrics.split('\n').map(line => {
+                        return line.replace(
+                            new RegExp(keyword, 'g'),
+                            `<span class="highlight">${keyword}</span>`
+                        );
+                    });
+
+                    // 将每行歌词渲染为段落
+                    document.getElementById('lyrics').innerHTML = lines.map(line => `<p>${line}</p>`).join('');
+                } else {
+                    document.getElementById('lyrics').innerHTML = '<p>未找到该歌曲的歌词。</p>';
+                }
+            })
+            .catch(error => {
+                console.error('加载歌词数据失败:', error);
+            });
+    </script>  
+
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #songTitle {
+            font-size: 24px;
+            font-weight: normal;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #lyrics p {
+            font-size: 18px;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .highlight {
+            color: rgb(64, 157, 238); /* 与 search 页面一致的蓝色 */
+        }
+    </style>
+</body>  
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>  
+<html lang="zh-CN">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 添加视口元标签 -->
+    <title>歌词搜索</title>  
+    <link rel="stylesheet" href="styles.css">  
+</head>  
+<body>  
+    <div class="container">  
+        <!-- 搜索框 -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="输入歌词关键词">  
+            <button id="searchButton">搜索</button>
+        </div>
+
+        <!-- 词云图片 -->
+        <div class="wordcloud-container">
+            <img src="词云.png" alt="词云图片">
+        </div>
+
+        <!-- 专辑封面 -->
+        <div class="album-container">
+            <div class="album-slider">
+                <img src="平凡的一天专辑封面.jpg" alt="平凡的一天专辑封面">  
+                <img src="小王专辑封面.jpg" alt="小王专辑封面">  
+                <img src="幼鸟指南专辑封面.jpg" alt="幼鸟指南专辑封面">
+                <img src="冒险精神专辑封面.jpg" alt="冒险精神专辑封面">    
+            </div>
+        </div>
+    </div>  
+
+    <script>  
+        // 搜索按钮点击事件
+        const searchButton = document.getElementById('searchButton');
+        searchButton.addEventListener('click', () => {
+            const keyword = document.getElementById('searchInput').value.trim();
+            if (keyword) {
+                window.location.href = `search.html?keyword=${encodeURIComponent(keyword)}`;
+            } else {
+                alert('请输入关键词进行搜索！');
+            }
+        });
+
+        // 支持按下回车键进行搜索
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                const keyword = searchInput.value.trim();
+                if (keyword) {
+                    window.location.href = `search.html?keyword=${encodeURIComponent(keyword)}`;
+                } else {
+                    alert('请输入关键词进行搜索！');
+                }
+            }
+        });
+    </script>  
+</body>  
+</html>

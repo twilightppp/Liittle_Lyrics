@@ -1,0 +1,165 @@
+body {  
+    font-family: Arial, sans-serif;  
+    margin: 0;  
+    padding: 0;  
+    background-color: #f0f0f0;  
+}  
+
+/* 页面整体居中 */
+.container {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 800px;
+}  
+
+/* 搜索框样式 */
+.search-bar {
+    margin: 20px 0;
+}
+
+.search-bar input {
+    width: 70%; /* 调整输入框宽度 */
+    height: 40px; /* 调整输入框高度 */
+    font-size: 16px; /* 调整字体大小 */
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    height: 40px;
+    font-size: 16px;
+    padding: 0 20px;
+    margin-left: 10px;
+    border: none;
+    background-color: #FFD700;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #FFC107;
+}
+
+/* 词云图片样式 */
+.wordcloud-container {
+    margin: 20px 0;
+}
+
+.wordcloud-container img {
+    max-width: 100%;
+    height: auto;
+    
+}
+.song {  
+    padding: 10px;  
+    border: 1px solid #ccc;  
+    margin: 5px 0;  
+    border-radius: 5px;  
+    background-color: white;  
+    cursor: pointer;  
+}  
+
+.song-name {  
+    font-size: 18px;  
+    color: #007bff;  
+}  
+
+#lyrics {  
+    margin-top: 20px;  
+}  
+
+.highlight {  
+    font-size: 24px; /* 高亮部分字体加大 */  
+    font-weight: bold;  
+    color: red; /* 高亮部分颜色 */  
+    text-align: center; /* 中心对齐 */  
+}  
+
+/* 确保歌词区域能滚动 */  
+#lyrics div {  
+    margin: 5px 0;  
+}
+
+.result-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.result-item h2 {
+    margin: 0 0 5px;
+}
+
+.result-item p {
+    margin: 0;
+    color: #555;
+}
+
+/* 专辑封面样式 */
+.album-container {
+    margin: 20px 0;
+}
+
+.album-slider {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* 图片之间的间距 */
+}
+
+.album-slider img {
+    width: 200px; /* 调整专辑封面的宽度 */
+    height: auto;
+    border-radius: 10px; /* 可选：添加圆角 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+}
+
+.prev-button, .next-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+.prev-button:hover, .next-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: black; /* 设置箭头为黑色 */
+    cursor: pointer;
+    user-select: none;
+    z-index: 10;
+}
+
+.prev-arrow {
+    left: -50px; /* 调整箭头位置 */
+}
+
+.next-arrow {
+    right: -50px; /* 调整箭头位置 */
+}
+
+.arrow:hover {
+    color: rgba(0, 0, 0, 0.8); /* 悬停时颜色稍微加深 */
+}

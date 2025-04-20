@@ -1,0 +1,179 @@
+<!DOCTYPE html>  
+<html lang="zh-CN">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 添加视口元标签 -->
+    <title>搜索结果</title>  
+    <link rel="stylesheet" href="styles.css">  
+</head>  
+<body>  
+    <div class="container">  
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="输入歌词关键词" value="">  
+            <button id="searchButton">搜索</button>
+        </div>
+        <div id="resultCount" class="result-count"></div> <!-- 添加显示搜索结果数量的元素 -->
+        <div id="results"></div>  
+    </div>  
+
+    <script>  
+        // 获取 URL 中的关键词
+        const params = new URLSearchParams(window.location.search);
+        const keyword = params.get('keyword');
+        document.getElementById('searchInput').value = keyword;
+
+        // 加载歌词数据
+        fetch('lyrics.json')
+            .then(response => response.json())
+            .then(data => {
+                const resultsContainer = document.getElementById('results');
+                const resultCount = document.getElementById('resultCount');
+                let hasResults = false;
+                let resultCountNumber = 0; // 记录搜索结果数量
+
+                // 遍历每首歌，查找关键词
+                data.forEach(song => {
+                    // 将歌词按换行符分隔
+                    const lines = song.lyrics.split('\n');
+                    let matchedLine = null;
+
+                    // 查找包含关键词的句子
+                    for (const line of lines) {
+                        if (line.includes(keyword)) {
+                            matchedLine = line;
+                            break;
+                        }
+                    }
+
+                    if (matchedLine) {
+                        hasResults = true;
+                        resultCountNumber++; // 每找到一首歌，计数加 1
+
+                        // 高亮关键词为蓝色
+                        const highlightedLine = matchedLine.replace(
+                            new RegExp(keyword, 'g'),
+                            `<span class="highlight">${keyword}</span>`
+                        );
+
+                        // 生成结果项
+                        const resultItem = `
+                            <div class="result-item" onclick="window.location.href='song.html?title=${encodeURIComponent(song.title)}&keyword=${encodeURIComponent(keyword)}'">
+                                <h2>《${song.title}》</h2>
+                                <p>${highlightedLine}</p>
+                            </div>
+                        `;
+                        resultsContainer.innerHTML += resultItem;
+                    }
+                });
+
+                // 显示搜索结果数量
+                if (hasResults) {
+                    resultCount.textContent = `共有 ${resultCountNumber} 条搜索结果`;
+                } else {
+                    resultCount.textContent = '共有 0 条搜索结果';
+                    resultsContainer.innerHTML = '<p>未找到匹配的歌曲。</p>';
+                }
+            })
+            .catch(error => {
+                console.error('加载歌词数据失败:', error);
+            });
+
+        // 监听搜索框输入，支持重新搜索
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const newKeyword = this.value;
+                window.location.href = `search.html?keyword=${encodeURIComponent(newKeyword)}`;
+            }
+        });
+
+        // 搜索按钮点击事件
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const newKeyword = document.getElementById('searchInput').value;
+            window.location.href = `search.html?keyword=${encodeURIComponent(newKeyword)}`;
+        });
+    </script>  
+
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        #searchInput {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+
+        #searchButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        #searchButton:hover {
+            background-color: #0056b3;
+        }
+
+        #results {
+            margin-top: 20px;
+        }
+
+        .result-item {
+            width: 340px;
+            margin: 10px auto;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .result-item:hover {
+            background-color: #e6f7ff;
+        }
+
+        .result-item h2 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            font-weight: normal;
+            color: #333;
+        }
+
+        .result-item p {
+            margin: 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .highlight {
+            color: rgb(64, 157, 238);
+        }
+
+        .result-count {
+            text-align: center; /* 居中对齐 */
+            font-size: 14px;
+            color: #666;
+            margin-top: -10px; /* 上移一点 */
+        }
+    </style>
+</body>  
+</html>
