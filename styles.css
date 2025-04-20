@@ -5,22 +5,24 @@ body {
     background-color: #f0f0f0;  
 }  
 
-/* 页面整体居中 */
+/* 通用容器样式 */
 .container {
-    text-align: center;
-    margin: 0 auto;
     max-width: 800px;
-}  
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
 
-/* 搜索框样式 */
+/* 通用搜索框样式 */
 .search-bar {
-    margin: 20px 0;
+    margin: 20px auto;
+    text-align: center; /* 居中对齐 */
 }
 
 .search-bar input {
-    width: 70%; /* 调整输入框宽度 */
-    height: 40px; /* 调整输入框高度 */
-    font-size: 16px; /* 调整字体大小 */
+    width: 70%; /* 输入框宽度 */
+    height: 40px; /* 输入框高度 */
+    font-size: 16px; /* 字体大小 */
     padding: 5px 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -32,14 +34,14 @@ body {
     padding: 0 20px;
     margin-left: 10px;
     border: none;
-    background-color: #FFD700;
+    background-color: #FFD700; /* 金色背景 */
     color: white;
     border-radius: 5px;
     cursor: pointer;
 }
 
 .search-bar button:hover {
-    background-color: #FFC107;
+    background-color: #FFC107; /* 悬停时的颜色 */
 }
 
 /* 词云图片样式 */
@@ -50,8 +52,8 @@ body {
 .wordcloud-container img {
     max-width: 100%;
     height: auto;
-    
 }
+
 .song {  
     padding: 10px;  
     border: 1px solid #ccc;  
@@ -63,7 +65,7 @@ body {
 
 .song-name {  
     font-size: 18px;  
-    color: #007bff;  
+    color: #FFC107;  
 }  
 
 #lyrics {  
@@ -73,7 +75,7 @@ body {
 .highlight {  
     font-size: 24px; /* 高亮部分字体加大 */  
     font-weight: bold;  
-    color: red; /* 高亮部分颜色 */  
+    color: #FFC107; /* 高亮部分颜色 */  
     text-align: center; /* 中心对齐 */  
 }  
 
@@ -82,20 +84,48 @@ body {
     margin: 5px 0;  
 }
 
+/* 搜索结果页面样式 */
+#results {
+    margin-top: 20px;
+    text-align: center; /* 整体居中对齐 */
+}
+
 .result-item {
+    width: 70%;
+    margin: 10px auto;
+    padding: 15px;
     border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center; /* 内容居中对齐 */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.result-item:hover {
+    background-color: #e6f7ff;
 }
 
 .result-item h2 {
     margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: normal;
+    color: #333;
+    text-align: center; /* 标题居中 */
 }
 
 .result-item p {
     margin: 0;
+    font-size: 16px;
     color: #555;
+    text-align: center; /* 描述文字居中 */
+}
+
+.result-count {
+    text-align: center; /* 统计结果居中对齐 */
+    font-size: 14px;
+    color: #666;
+    margin-top: -10px; /* 上移一点 */
 }
 
 /* 专辑封面样式 */
