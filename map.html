@@ -10,38 +10,56 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: #f0f8ff;
+            background: #ffffff;
         }
 
         #map-container {
+            position: relative; /* 设置相对定位以容纳内部绝对定位的元素 */
             width: 100%;
-            max-width: 1000px;
-            height: 700px;
+            max-width: 600px;
+            background: #f0f8ff;
+            height: 500px;
             margin: 20px auto;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1; /* 地图容器的层级较低 */
         }
 
         .legend {
+            position: absolute; /* 绝对定位 */
+            bottom: 10px; /* 距离容器底部 10px */
+            left: 10px; /* 距离容器左侧 10px */
+            background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
+            padding: 10px; /* 内边距 */
+            border-radius: 8px; /* 圆角 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
             display: flex;
-            justify-content: center;
-            margin: 20px auto;
-            gap: 40px;
+            flex-direction: column; /* 垂直排列 */
+            gap: 10px; /* 每个项目之间的间距 */
+            z-index: 10; /* 确保在地图之上 */
+        }
+
+        .legend-inline {
+            display: flex;
+            justify-content: center; /* 居中对齐 */
+            align-items: center;
+            gap: 20px; /* 图例项之间的间距 */
+            margin: 10px 0; /* 与标题和地图的间距 */
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 16px;
-            color: #666;
+            gap: 8px; /* 图例颜色块和文字之间的间距 */
+            font-size: 14px;
+            color: #333;
         }
 
         .legend-item span {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px; /* 圆角 */
         }
 
         .title {
@@ -99,8 +117,7 @@
 </head>
 <body>
     <div class="title">冒险精神</div>
-    <div id="map-container"></div>
-    <div class="legend">
+    <div class="legend-inline">
         <div class="legend-item">
             <span style="background-color: #5894D0;"></span> 已经走过的城市
         </div>
@@ -108,6 +125,7 @@
             <span style="background-color: #AFDBF4;"></span> 即将抵达的城市
         </div>
     </div>
+    <div id="map-container"></div>
     <div class="popup" id="popup">收到你的期待啦，毛毛马上就来咯~</div>
 
     <script>
@@ -158,7 +176,7 @@
                     tooltip: { show: false },
                     geo: {
                         map: 'china',
-                        roam: true,
+                        roam: false,
                         zoom: 1.2,
                         label: { 
                             show: false,

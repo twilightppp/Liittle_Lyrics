@@ -49,9 +49,18 @@ body {
     margin: 20px 0;
 }
 
-.wordcloud-container img {
+/*.wordcloud-container img {
     max-width: 100%;
     height: auto;
+}*/
+
+.wordcloud-container img {
+    display: block;
+    width: 100%; /* 设置宽度为容器的 100% */
+    max-width: 700px; /* 与演唱会图片的宽度一致 */
+    margin: 20px auto; /* 居中对齐 */
+    border-radius: 10px; /* 添加圆角，与演唱会图片一致 */
+    
 }
 
 .song {  
@@ -131,7 +140,7 @@ body {
 
 /* 专辑封面样式 */
 .album-container {
-    margin: 20px 0;
+    margin-bottom: 10px; /* 减小专辑封面容器的底部外边距 */
 }
 
 .album-slider {
@@ -142,7 +151,7 @@ body {
 }
 
 .album-slider img {
-    width: 150px; /* 调整专辑封面的宽度 */
+    width: 160px; /* 调整专辑封面的宽度 */
     height: auto;
     border-radius: 10px; /* 可选：添加圆角 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
@@ -155,9 +164,10 @@ body {
 
 /* 演唱会图片样式 */
 .concert-banner {
+    margin-top: 10px; /* 减小演唱会图片的顶部外边距 */
     display: block;
     width: 100%; /* 设置宽度与词云图片一致 */
-    max-width: 800px; /* 限制最大宽度 */
+    max-width: 700px; /* 限制最大宽度 */
     margin: 20px auto; /* 居中对齐 */
     border-radius: 10px; /* 添加圆角 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
