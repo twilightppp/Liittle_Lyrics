@@ -91,8 +91,8 @@ body {
 }
 
 .result-item {
-    width: 60%; /* 调整宽度 */
-    height: 50px; /* 设置固定高度*/
+    width: 70%; /* 调整宽度，例如 70% */
+    height: 60px; /* 设置固定高度*/
     margin: 10px auto;
     padding: 15px;
     border: 1px solid #ddd;
@@ -151,6 +151,22 @@ body {
 /* 每两张图片后强制换行 */
 .album-slider img:nth-child(2n+1) {
     clear: both; /* 强制换行 */
+}
+
+/* 演唱会图片样式 */
+.concert-banner {
+    display: block;
+    width: 100%; /* 设置宽度与词云图片一致 */
+    max-width: 800px; /* 限制最大宽度 */
+    margin: 20px auto; /* 居中对齐 */
+    border-radius: 10px; /* 添加圆角 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+    cursor: pointer; /* 鼠标悬停时显示手型 */
+    transition: transform 0.3s ease; /* 添加缩放动画 */
+}
+
+.concert-banner:hover {
+    transform: scale(1.05); /* 鼠标悬停时放大 */
 }
 
 .prev-button, .next-button {

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国地图展示</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <style>
+        /* 保持原有样式不变 */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f0f8ff;
+        }
+
+        #map-container {
+            width: 100%;
+            max-width: 1000px;
+            height: 700px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+            gap: 40px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .legend-item span {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 30px 0;
+            letter-spacing: 2px;
+        }
+
+        .popup {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff9a9e;
+            border-radius: 25px;
+            padding: 15px 40px;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(255,154,158,0.3);
+            display: none;
+            animation: bounceIn 0.6s, fadeOut 1s 2s forwards;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: translateX(-50%) scale(0); }
+            60% { transform: translateX(-50%) scale(1.1); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,131,42,0.3);
+            animation: ripple 1.2s ease-out;
+        }
+
+        @keyframes ripple {
+            from {
+                transform: scale(0);
+                opacity: 1;
+            }
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="title">冒险精神</div>
+    <div id="map-container"></div>
+    <div class="legend">
+        <div class="legend-item">
+            <span style="background-color: #5894D0;"></span> 已经走过的城市
+        </div>
+        <div class="legend-item">
+            <span style="background-color: #AFDBF4;"></span> 即将抵达的城市
+        </div>
+    </div>
+    <div class="popup" id="popup">收到你的期待啦，毛毛马上就来咯~</div>
+
+    <script>
+        // 初始化实例
+        const chart = echarts.init(document.getElementById('map-container'));
+        
+        // 加载地图数据
+        fetch('china.geojson')
+            .then(response => response.json())
+            .then(geoJSON => {
+                echarts.registerMap('china', geoJSON);
+
+                // 数据配置
+                const config = {
+                    visited: {
+                        provinces: [
+                            '四川省', '广东省', '江苏省', 
+                            '福建省', '上海市', '山东省',
+                            '陕西省', '天津市', '黑龙江省'
+                        ],
+                        color: '#5894D0'
+                    },
+                    upcoming: {
+                        provinces: [
+                            '浙江省', '湖北省', 
+                            '河南省', '江西省'
+                        ],
+                        color: '#AFDBF4'
+                    }
+                };
+
+                // 修正省份名称格式（根据实际geojson中的名称调整）
+                const formatProvince = name => {
+                    // 处理直辖市和特别行政区
+                    const special = ['北京', '天津', '上海', '重庆', '香港', '澳门'];
+                    const match = special.find(c => name.includes(c));
+                    return match ? `${match}市` : name;
+                };
+
+                // 创建固定颜色省份集合
+                const fixedProvinces = new Set([
+                    ...config.visited.provinces,
+                    ...config.upcoming.provinces
+                ].map(p => formatProvince(p)));
+
+                // 地图配置
+                const option = {
+                    tooltip: { show: false },
+                    geo: {
+                        map: 'china',
+                        roam: true,
+                        zoom: 1.2,
+                        label: { 
+                            show: false,
+                            //color: '#666',
+                            //fontSize: 14
+                        },
+                        itemStyle: {
+                            borderColor: '#999',
+                            borderWidth: 0.8,
+                            areaColor: '#FFF',
+                            shadowColor: 'rgba(0, 0, 0, 0.1)',
+                            shadowBlur: 8
+                        },
+                        emphasis: { 
+                            label: { show: false },
+                            itemStyle: { 
+                                areaColor: null, // 鼠标悬停时不改变颜色,
+                                borderColor: '#999'
+                            } 
+                        },
+                        regions: [
+                            ...config.visited.provinces.map(province => ({
+                                name: formatProvince(province),
+                                itemStyle: { 
+                                    areaColor: config.visited.color,
+                                    borderColor: '#999'
+                                },
+                                emphasis: {
+                                    itemStyle: {
+                                        areaColor: config.visited.color,
+                                        borderColor: '#999'
+                                    }
+                                }
+                            })),
+                            ...config.upcoming.provinces.map(province => ({
+                                name: formatProvince(province),
+                                itemStyle: { 
+                                    areaColor: config.upcoming.color,
+                                    borderColor: '#999'
+                                },
+                                emphasis: {
+                                    itemStyle: {
+                                        areaColor: config.upcoming.color,
+                                        borderColor: '#999'
+                                    }
+                                }
+                            }))
+                        ]
+                    }
+                };
+
+                chart.setOption(option);
+
+                // 点击交互
+                chart.on('click', params => {
+                    if (params.componentType === 'geo') {
+                        const provinceName = params.name;
+                        
+                        // 跳过固定颜色省份
+                        if (fixedProvinces.has(provinceName)) return;
+
+                        // 涟漪动画
+                        const ripple = document.createElement('div');
+                        ripple.className = 'ripple';
+                        ripple.style.left = params.event.event.pageX + 'px';
+                        ripple.style.top = params.event.event.pageY + 'px';
+                        document.body.appendChild(ripple);
+                        setTimeout(() => ripple.remove(), 1200);
+
+                        // 更新省份颜色，同时保留初始已填充颜色的省份
+                        const updatedRegions = [
+                            ...config.visited.provinces.map(province => ({
+                                name: formatProvince(province),
+                                itemStyle: { areaColor: config.visited.color },
+                                emphasis: {
+                                    itemStyle: { areaColor: config.visited.color } // 保持原有颜色
+                                }
+                            })),
+                            ...config.upcoming.provinces.map(province => ({
+                                name: formatProvince(province),
+                                itemStyle: { areaColor: config.upcoming.color },
+                                emphasis: {
+                                    itemStyle: { areaColor: config.upcoming.color } // 保持原有颜色
+                                }
+                            })),
+                            {
+                                name: provinceName,
+                                itemStyle: { areaColor: '#ff9a9e' }, // 点击后的省份颜色
+                                emphasis: {
+                                    itemStyle: { areaColor: '#ff9a9e' } // 保持点击后的颜色
+                                }
+                            }
+                        ];
+
+                        chart.setOption({
+                            geo: {
+                                regions: updatedRegions
+                            }
+                        });
+
+                        // 显示弹窗
+                        const popup = document.getElementById('popup');
+                        popup.style.display = 'block';
+                        setTimeout(() => {
+                            popup.style.display = 'none';
+                        }, 2500);
+                    }
+                });
+
+                // 窗口自适应
+                window.addEventListener('resize', () => chart.resize());
+            })
+            .catch(error => console.error('地图加载失败:', error));
+    </script>
+</body>
+</html>
