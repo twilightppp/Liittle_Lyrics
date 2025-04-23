@@ -5,123 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>中国地图展示</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
-    <style>
-        /* 保持原有样式不变 */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: #ffffff;
-        }
-
-        #map-container {
-            position: relative; /* 设置相对定位以容纳内部绝对定位的元素 */
-            width: 100%;
-            max-width: 600px;
-            background: #f0f8ff;
-            height: 500px;
-            margin: 20px auto;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1; /* 地图容器的层级较低 */
-        }
-
-        .legend {
-            position: absolute; /* 绝对定位 */
-            bottom: 10px; /* 距离容器底部 10px */
-            left: 10px; /* 距离容器左侧 10px */
-            background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
-            padding: 10px; /* 内边距 */
-            border-radius: 8px; /* 圆角 */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
-            display: flex;
-            flex-direction: column; /* 垂直排列 */
-            gap: 10px; /* 每个项目之间的间距 */
-            z-index: 10; /* 确保在地图之上 */
-        }
-
-        .legend-inline {
-            display: flex;
-            justify-content: center; /* 居中对齐 */
-            align-items: center;
-            gap: 20px; /* 图例项之间的间距 */
-            margin: 10px 0; /* 与标题和地图的间距 */
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px; /* 图例颜色块和文字之间的间距 */
-            font-size: 14px;
-            color: #333;
-        }
-
-        .legend-item span {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px; /* 圆角 */
-        }
-
-        .title {
-            font-size: 32px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 30px 0;
-            letter-spacing: 2px;
-        }
-
-        .popup {
-            position: fixed;
-            top: 80%; /* 调整弹窗位置 */
-            left: 50%; /* 水平居中 */
-            transform: translate(-50%, -50%); /* 保持居中 */
-            background: #ff9a9e;
-            border-radius: 25px;
-            padding: 15px 40px;
-            color: white;
-            font-size: 18px;
-            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.3);
-            display: none;
-            animation: fadeIn 0.6s ease-out, fadeOut 1s 2s forwards; /* 替换为透明度动画 */
-            z-index: 1000; /* 确保弹窗在地图之上 */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
-
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,131,42,0.3);
-            animation: ripple 1.2s ease-out;
-        }
-
-        @keyframes ripple {
-            from {
-                transform: scale(0);
-                opacity: 1;
-            }
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- 引入外部样式表 -->
 </head>
 <body>
     <div class="title">冒险精神</div>
@@ -188,8 +72,6 @@
                         zoom: 1.2,
                         label: { 
                             show: false,
-                            //color: '#666',
-                            //fontSize: 14
                         },
                         itemStyle: {
                             borderColor: '#999',
@@ -201,7 +83,7 @@
                         emphasis: { 
                             label: { show: false },
                             itemStyle: { 
-                                areaColor: null, // 鼠标悬停时不改变颜色,
+                                areaColor: null,
                                 borderColor: '#999'
                             } 
                         },
@@ -260,21 +142,21 @@
                                 name: formatProvince(province),
                                 itemStyle: { areaColor: config.visited.color },
                                 emphasis: {
-                                    itemStyle: { areaColor: config.visited.color } // 保持原有颜色
+                                    itemStyle: { areaColor: config.visited.color }
                                 }
                             })),
                             ...config.upcoming.provinces.map(province => ({
                                 name: formatProvince(province),
                                 itemStyle: { areaColor: config.upcoming.color },
                                 emphasis: {
-                                    itemStyle: { areaColor: config.upcoming.color } // 保持原有颜色
+                                    itemStyle: { areaColor: config.upcoming.color }
                                 }
                             })),
                             {
                                 name: provinceName,
-                                itemStyle: { areaColor: '#ff9a9e' }, // 点击后的省份颜色
+                                itemStyle: { areaColor: '#ff9a9e' },
                                 emphasis: {
-                                    itemStyle: { areaColor: '#ff9a9e' } // 保持点击后的颜色
+                                    itemStyle: { areaColor: '#ff9a9e' }
                                 }
                             }
                         ];

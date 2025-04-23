@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>词频统计</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 引入外部样式表 -->
+</head>
+<body>
+    <div class="title">毛老师最喜欢的那些词</div> <!-- 标题 -->
+    <div id="wordcloud-container">
+        <table id="word-table">
+            <thead>
+                <tr>
+                    <th>word</th>
+                    <th>count</th>
+                    <th>song</th>
+                    <th>like</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 数据将通过 JavaScript 动态加载 -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // 加载词频数据
+        fetch('wordcount.json')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#word-table tbody');
+
+                // 只展示前 20 个词
+                const topWords = data.slice(0, 20);
+
+                topWords.forEach(item => {
+                    const row = document.createElement('tr');
+
+                    // 关键词
+                    const keywordCell = document.createElement('td');
+                    keywordCell.textContent = item.keyword;
+                    row.appendChild(keywordCell);
+
+                    // 出现次数
+                    const countCell = document.createElement('td');
+                    countCell.textContent = item.count;
+                    row.appendChild(countCell);
+
+                    // 有这个词的歌（只展示出现频次最高的一首歌）
+                    const songsCell = document.createElement('td');
+                    songsCell.textContent = item.songs[0] || '未知歌曲'; // 如果没有歌曲，显示“未知歌曲”
+                    row.appendChild(songsCell);
+
+                    // 点赞
+                    const likeCell = document.createElement('td');
+                    const likeButton = document.createElement('button');
+                    likeButton.textContent = '🤍'; // 初始为空心红心
+                    likeButton.classList.add('like-button');
+                    likeButton.addEventListener('click', () => {
+                        // 切换红心状态
+                        if (likeButton.textContent === '🤍') {
+                            likeButton.textContent = '💖'; // 点赞后变为实心红心
+                        } else {
+                            likeButton.textContent = '🤍'; // 再次点击变回空心红心
+                        }
+                    });
+                    likeCell.appendChild(likeButton);
+                    row.appendChild(likeCell);
+
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('加载词频数据失败:', error));
+    </script>
+</body>
+</html>
